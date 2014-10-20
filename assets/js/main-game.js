@@ -63,9 +63,9 @@ var canvas = $('#game'),
 		}
 	}
 
-	var life = {
+/*	var life = {
 		percent: 100
-		}
+		}  */
 
 	var connection = {
 		connectTo: function() {
@@ -75,8 +75,6 @@ var canvas = $('#game'),
 		}
 	}
 
-	$("#host").click(function(){
-		connection.open();
 	})
 	$("#connect").click(function(){
 		connection.connectTo();
