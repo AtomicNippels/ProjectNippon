@@ -3,6 +3,7 @@ var playerImg = new Image();
 playerImg.src = "textures/player1.jpg";
 var yourID = prompt("Pick your ID", "Your ID")
 var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'})
+console.log(yourID);
 
 var canvas = $('#game'),
 		context = canvas.get(0).getContext('2d'),
@@ -45,7 +46,7 @@ var canvas = $('#game'),
 		x: 390,
 		y: Math.floor(Math.random() * 500) + 1,
 		height: 10,
-		width: 10,/
+		width: 10,
 		velocityX: 0,
 		velocityY: Math.floor(Math.random() * 3) + 1,
 		draw: function() {
@@ -75,7 +76,6 @@ var canvas = $('#game'),
 		}
 	}
 
-	})
 	$("#connect").click(function(){
 		connection.connectTo();
 	})
