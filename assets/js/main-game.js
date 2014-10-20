@@ -1,6 +1,10 @@
 $(function(){
 var playerImg = new Image();
+var floorImg = new Image();
+var wallImg = new Image();
 playerImg.src = "textures/player1.png";
+floorImg.src = "textures/floor.png";
+wallImg.src = "textures/wall_background.png";
 var yourID = prompt("Pick your ID", "Your ID")
 var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'})
 console.log(yourID);
@@ -9,7 +13,7 @@ var canvas = $('#game'),
 		context = canvas.get(0).getContext('2d'),
 		canvasWidth = canvas.width(),
 		canvasHeight = canvas.height(),
-		fps = 40;
+		fps = 30;
 	
 	var player = {
 		x: 100,
@@ -17,10 +21,10 @@ var canvas = $('#game'),
 		height: 100,
 		width: 100,
 		score: 0,
-		speedUp: 5,
-		speedDown: 5,
-		speedLeft: 5,
-		speedRight: 5,
+		speedUp: 1,
+		speedDown: 1,
+		speedLeft: 1,
+		speedRight: 1,
 		draw: function() {
 
 			context.drawImage(playerImg, this.x, this.y);
@@ -34,6 +38,8 @@ var canvas = $('#game'),
 		height: 80,
 		width: 20,
 		score: 0,
+		speedUp: 1,
+		speedDown: 1,
 		draw: function() {
 
 			context.fillStyle = "#fff",
@@ -89,12 +95,12 @@ var canvas = $('#game'),
 
 	function draw() {
 
-		context.fillStyle = "#000";
-		context.fillRect(0, 0, canvasWidth, canvasHeight);
+		context.drawImage(wallImg, 0, 0);
+		context.drawImage(floorImg, 100, 100);
 
 		ball.draw();
-		player.draw();
 		opponent.draw();
+		player.draw();
 
 	}
 
@@ -108,6 +114,14 @@ var canvas = $('#game'),
 	}
 
 	function handleInput() {
+
+		if(keydown.up) {
+			opponent.y -= opponent.speedUp;
+		}
+
+		if(keydown.down) {
+			opponent.y += opponent.speedDown;
+		}
 
 		if(keydown.w) {
 			player.y -= player.speedUp;
@@ -128,14 +142,14 @@ var canvas = $('#game'),
 	function update() {
 
 		// Player scores a point
-		if((ball.x + ball.width) > canvasWidth) {
+		if((ball.x + ball.width) >= (canvasWidth-200)) {
 			console.log('player 1 wins');
 			player.score ++;
 			ball.reset();
 		}
 
 		// Opponent scores a point
-		if(ball.x < 0) {
+		if(ball.x <= 100) {
 			console.log('player 2 wins');
 			opponent.score ++;
 			ball.reset();
@@ -173,17 +187,22 @@ var canvas = $('#game'),
 		}
 
 		// Stop ball going out of canvas view
-		if(ball.y < 0) ball.velocityY = -ball.velocityY;
-		if((ball.y + ball.height) > canvasHeight) ball.velocityY = -ball.velocityY;
+		if(ball.y <= 100) ball.velocityY = -ball.velocityY;
+		if((ball.y + ball.height) > (canvasHeight-100)) ball.velocityY = -ball.velocityY;
 
-		if(player.y <= 0) player.speedUp = 0;
+		// Stop player going out of canvas view
+		if(player.y <= 100) player.speedUp = 0;
 		else player.speedUp = 20;
-		if((player.y + player.height) >= canvasHeight) player.speedDown = 0;
+		if((player.y + player.height) >= (canvasHeight-100)) player.speedDown = 0;
 		else player.speedDown = 20;
-		if(player.x <= 0) player.speedLeft = 0;
+		if(player.x <= 100) player.speedLeft = 0;
 		else player.speedLeft = 20;
-		if((player.x + player.width) >= canvasWidth) player.speedRight = 0;
+		if((player.x + player.width) >= (canvasWidth-100)) player.speedRight = 0;
 		else player.speedRight = 20;
+		if(opponent.y <= 100) opponent.speedUp = 0;
+		else opponent.speedUp = 20;
+		if((opponent.y + opponent.height) >= (canvasHeight-100)) opponent.speedDown = 0;
+		else opponent.speedDown = 20;
 
 		// Moving the ball
 		ball.x -= ball.velocityX;
