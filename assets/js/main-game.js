@@ -45,7 +45,7 @@ var canvas = $('#game'),
 		x: 390,
 		y: Math.floor(Math.random() * 500) + 1,
 		height: 10,
-		width: 10,
+		width: 10,/
 		velocityX: 0,
 		velocityY: Math.floor(Math.random() * 3) + 1,
 		draw: function() {
@@ -62,6 +62,10 @@ var canvas = $('#game'),
 
 		}
 	}
+
+	var life = {
+		percent: 100
+		}
 
 	var connection = {
 		connectTo: function() {
