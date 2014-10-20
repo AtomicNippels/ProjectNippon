@@ -1,6 +1,6 @@
 $(function(){
 var playerImg = new Image();
-playerImg.src = "textures/player1.jpg";
+playerImg.src = "textures/player1.png";
 var yourID = prompt("Pick your ID", "Your ID")
 var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'})
 console.log(yourID);
@@ -72,18 +72,16 @@ var canvas = $('#game'),
 		connectTo: function() {
 			var toID = prompt("Enter ID you want to connect to", "ID");
 			var conn = peer.connect(toID);
-			peer.on('connection', function(conn) {console.log("Connected to " + toID); connection.onConnected();});
+			peer.on('connection', function(conn) {});
 			},
 		onConnected: function() {
-			conn.on('open', function() {
+				console.log("Connected to " + toID); 
 				conn.send('Hello!');
 				conn.on('data', function(data) {
-					console.log('Received' + data);
+				console.log('Received' + data);
 				})
-			})
-		}
-	}	
-
+		}	
+	}
 
 	$("#connect").click(function(){
 		connection.connectTo();
