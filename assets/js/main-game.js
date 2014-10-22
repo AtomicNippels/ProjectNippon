@@ -8,7 +8,7 @@ player2Img.src = "textures/player2.png"
 floorImg.src = "textures/floor.png";
 wallImg.src = "textures/wall_background.png";
 var yourID = prompt("Pick your ID", "Your ID")
-var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'})
+var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'});
 console.log(yourID);
 $("body").css('overflow', 'hidden');
 
@@ -95,10 +95,9 @@ var canvas = $('#game'),
 		connectTo: function() {
 			var toID = prompt("Enter ID you want to connect to", "ID");
 			var conn = peer.connect(toID);
-			peer.on('connection', function(conn) {});
+			peer.on('connection', function(conn) {console.log("Connected to" + toID)});
 			},
-		onConnected: function() {
-				console.log("Connected to " + toID); 
+		onConnected: function() { 
 				conn.send("Test");
 				conn.on('data', function(data) {
 				console.log('Received' + data);
