@@ -1,13 +1,16 @@
 $(function(){
 var playerImg = new Image();
+var player2Img = new Image();
 var floorImg = new Image();
 var wallImg = new Image();
 playerImg.src = "textures/player1.png";
+player2Img.src = "textures/player2.png"
 floorImg.src = "textures/floor.png";
 wallImg.src = "textures/wall_background.png";
 var yourID = prompt("Pick your ID", "Your ID")
 var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'})
 console.log(yourID);
+$("body").css('overflow', 'hidden');
 
 var canvas = $('#game'),
 		context = canvas.get(0).getContext('2d'),
@@ -33,18 +36,32 @@ var canvas = $('#game'),
 	}
 
 	var opponent = {
-		x: 750,
-		y: 200,
-		height: 80,
-		width: 20,
+		x: 800,
+		y: 500,
+		height: 100,
+		width: 100,
 		score: 0,
 		speedUp: 1,
 		speedDown: 1,
+		speedLeft: 20,
+		speedRight: 20,
 		draw: function() {
 
-			context.fillStyle = "#fff",
-			context.fillRect(this.x, this.y, this.width, this.height);
+			context.drawImage(player2Img, this.x, this.y);
 		
+		}
+	}
+
+	var line = {
+		x: 499,
+		y: 100,
+		height: 500,
+		width: 2,
+		draw: function() {
+
+			context.fillStyle = "#000";
+			context.fillRect(this.x, this.y, this.width, this.height);
+
 		}
 	}
 
@@ -53,11 +70,11 @@ var canvas = $('#game'),
 		y: Math.floor(Math.random() * 500) + 1,
 		height: 10,
 		width: 10,
-		velocityX: 0,
+		velocityX: 8,
 		velocityY: Math.floor(Math.random() * 3) + 1,
 		draw: function() {
 
-			context.fillStyle = "#fff";
+			context.fillStyle = "#000";
 			context.fillRect(this.x, this.y, this.width, this.height);
 		
 		},
@@ -82,7 +99,7 @@ var canvas = $('#game'),
 			},
 		onConnected: function() {
 				console.log("Connected to " + toID); 
-				conn.send('Hello!');
+				conn.send("Test");
 				conn.on('data', function(data) {
 				console.log('Received' + data);
 				})
@@ -101,6 +118,7 @@ var canvas = $('#game'),
 		ball.draw();
 		opponent.draw();
 		player.draw();
+		line.draw();
 
 	}
 
@@ -118,18 +136,21 @@ var canvas = $('#game'),
 		if(keydown.up) {
 			opponent.y -= opponent.speedUp;
 		}
-
 		if(keydown.down) {
 			opponent.y += opponent.speedDown;
 		}
-
+		if(keydown.left) {
+			opponent.x -= opponent.speedLeft;
+		}
+		if(keydown.right) {
+			opponent.x += opponent.speedRight;
+		}
 		if(keydown.w) {
 			player.y -= player.speedUp;
 		}
 		if(keydown.s) {
 			player.y += player.speedDown;
 		}
-
 		if(keydown.a) {
 			player.x -= player.speedLeft;
 		}
@@ -142,7 +163,7 @@ var canvas = $('#game'),
 	function update() {
 
 		// Player scores a point
-		if((ball.x + ball.width) >= (canvasWidth-200)) {
+		if((ball.x + ball.width) >= (canvasWidth-100)) {
 			console.log('player 1 wins');
 			player.score ++;
 			ball.reset();
@@ -197,12 +218,16 @@ var canvas = $('#game'),
 		else player.speedDown = 20;
 		if(player.x <= 100) player.speedLeft = 0;
 		else player.speedLeft = 20;
-		if((player.x + player.width) >= (canvasWidth-100)) player.speedRight = 0;
+		if((player.x + player.width) >= (canvasWidth-500)) player.speedRight = 0;
 		else player.speedRight = 20;
 		if(opponent.y <= 100) opponent.speedUp = 0;
 		else opponent.speedUp = 20;
 		if((opponent.y + opponent.height) >= (canvasHeight-100)) opponent.speedDown = 0;
 		else opponent.speedDown = 20;
+		if(opponent.x <= 500) opponent.speedLeft = 0;
+		else opponent.speedLeft = 20;
+		if((opponent.x + opponent.width) >= (canvasWidth-100)) opponent.speedRight = 0;
+		else opponent.speedRight = 20;
 
 		// Moving the ball
 		ball.x -= ball.velocityX;

@@ -8,15 +8,21 @@ body {
 	text-align: center;
 	width: 100%;
 }
+#button_position {
+	position:absolute;
+	left:60px;
+	top:20px;
+}
+
 #game {
 	margin-top: 0px;
 	color: white;
 }
 
 .scoreboard {
-	color: white;
+	color: black;
 	position: fixed;
-	top: 130px; left: 20%;
+	top: -15px; left: 20%;
 	width: 800px;
 }
 .challenger, .opponent {
@@ -28,7 +34,7 @@ body {
 .opponent {  }
 .gameover {
 	background: transparent;
-	color: white;
+	color: black;
 	display: none;
 	font-size: 40pt;
 	height: 100px;
