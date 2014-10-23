@@ -11,7 +11,7 @@ body {
 #button_position {
 	position:absolute;
 	left:60px;
-	top:20px;
+	top:915px;
 }
 
 #game {
@@ -22,7 +22,7 @@ body {
 .scoreboard {
 	color: black;
 	position: fixed;
-	top: -15px; left: 20%;
+	top: -15px; left: 560px;
 	width: 800px;
 }
 .challenger, .opponent {
