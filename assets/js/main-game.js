@@ -295,7 +295,6 @@ var canvas = $('#game'),
 		ball.y -= ball.velocityY;
 
 		handleInput();
-		connection.receive();
 	}
 
 	var gameloop = setInterval(function() {
