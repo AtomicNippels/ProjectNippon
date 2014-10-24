@@ -152,7 +152,7 @@ var canvas = $('#game'),
  			conn.send('hi!');
 			});
 		}
-		receive: functipn() {
+		receive: function() {
 			peer.on('connection', function(conn) {
   				conn.on('data', function(data){
     			// Will print 'hi!'
