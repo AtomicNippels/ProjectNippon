@@ -5,30 +5,18 @@ var floorImg = new Image();
 var wallImg = new Image();
 playerImg.src = "textures/player1.png";
 player2Img.src = "textures/player2.png"
-floorImg.src = "textures/floor.png";
-wallImg.src = "textures/wall_background.png";
 var yourID = prompt("Pick your ID", "Your ID")
 var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'});
 console.log(yourID);
 $("body").css('overflow', 'hidden');
-resolution.detect();
 
-
-var resolution = {
-	detect: function() {
-
-		if(screen.widht<=720){floorImg.src = "textures/floor720p.png"; wallImg.src = "textures/wall_background720p.png"; canvas.width = 1200; canvas.height = 700;}
-		else{floorImg.src = "textures/floor.png"; wallImg.src = "textures/wall_background.png";}
-
-	}
-}
 
 var canvas = $('#game'),
 		context = canvas.get(0).getContext('2d'),
 		canvasWidth = canvas.width(),
 		canvasHeight = canvas.height(),
 		fps = 30;
-	
+
 	var player = {
 		x: 100,
 		y: 450,
@@ -114,6 +102,26 @@ var canvas = $('#game'),
 		}
 	}  
 
+	var resolution = {
+	detect: function() {
+
+		if(window.screen.availHeight<=800) {
+			floorImg.src = "textures/floor720p.png"; 
+			wallImg.src = "textures/wall_background720p.png"; 
+			console.log("720p");
+			canvas.height = 500;
+			canvas.width = 1200;
+			$('.scoreboard').css('left', '260px');
+			}
+		else {
+			floorImg.src = "textures/floor.png"; 
+			wallImg.src = "textures/wall_background.png";
+			canvas.height = 900;
+			canvas.width = 1800;
+			}
+		}
+	}
+
 	var connection = {
 		connectTo: function() {
 			var toID = prompt("Enter ID you want to connect to", "ID");
@@ -131,6 +139,8 @@ var canvas = $('#game'),
 	$("#connect").click(function(){
 		connection.connectTo();
 	})
+
+	resolution.detect();
 
 	function draw() {
 
