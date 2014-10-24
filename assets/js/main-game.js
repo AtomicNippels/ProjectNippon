@@ -146,28 +146,27 @@ var canvas = $('#game'),
 	}
 
 	var connection = {
-		connectTo: function() {
+		sendData: function() {
 			var toID = prompt("Enter ID you want to connect to", "ID");
 			var conn = peer.connect(toID);
-			console.log("Connected to:" + toID);
-				conn.on('open', function(){
-					conn.send('hi!');
-				});
-					peer.on('connection', function(conn) {
-						conn.on('data', function(data){
-    					// Will print 'hi!'
-    					console.log(data);
-    					});
-					});
+  			conn.on('open', function(){
+    			conn.send('hi!');
+    			console.log("Connected to:" + toID);
+  			}); 		
+		},
+		onData: function() {
+			peer.on('connection', function(conn) {
+    			conn.on('data', function(data){
+      			// Will print 'hi!'
+      			console.log(data);
+    			});
+  			});
 		}
 	}
 
-	$("#connect").click(function(){
-		connection.connectTo();
-	})
-
 	$("#send").click(function(){
 		connection.sendData();
+		connection.onData();
 	})
 
 	resolution.detect();
