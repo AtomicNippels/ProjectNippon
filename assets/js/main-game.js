@@ -6,15 +6,15 @@ var wallImg = new Image();
 playerImg.src = "textures/player1.png";
 player2Img.src = "textures/player2.png"
 var yourID = prompt("Pick your ID", "Your ID")
-var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'});
+var peer = new Peer(yourID, {key: '3bup2xnrqvo39pb9'});
 console.log(yourID);
 $("body").css('overflow', 'hidden');
 
 
 var canvas = $('#game'),
 		context = canvas.get(0).getContext('2d'),
-		canvasWidth = canvas.width(),
-		canvasHeight = canvas.height(),
+		canvasWidth = canvas.width,
+		canvasHeight = canvas.height,
 		fps = 30;
 
 	var player = {
@@ -52,10 +52,10 @@ var canvas = $('#game'),
 	}
 
 	var line = {
-		x: 899,
+		x: 900,
 		y: 10,
 		height: 880,
-		width: 2,
+		width: 1,
 		draw: function() {
 
 			context.fillStyle = "#000";
@@ -105,19 +105,41 @@ var canvas = $('#game'),
 	var resolution = {
 	detect: function() {
 
-		if(window.screen.availHeight<=800) {
+		if(window.screen.availHeight<=900 && window.screen.availWidth<=1800) {
 			floorImg.src = "textures/floor720p.png"; 
 			wallImg.src = "textures/wall_background720p.png"; 
 			console.log("720p");
-			canvas.height = 500;
-			canvas.width = 1200;
-			$('.scoreboard').css('left', '260px');
+			$('.scoreboard').css('left', '560px');
+			$('#button_position').css('top', '715px');
+			$('#button_position').css('left', '360px');
+			line.x = 600;
+			line.height = 680;
+			player.x = 110;
+			player.y = 290;
+			opponent.x = 990;
+			opponent.y = 290;
+			context.canvas.height = 700;
+			context.canvas.width = 1200;
+			canvasHeight = context.canvas.height;
+			canvasWidth = context.canvas.width;
+
 			}
 		else {
 			floorImg.src = "textures/floor.png"; 
 			wallImg.src = "textures/wall_background.png";
-			canvas.height = 900;
-			canvas.width = 1800;
+			console.log("1080p");
+			$('.scoreboard').css('left', '560px');
+			$('#button_position').css('top', '915px', 'left', '60px');
+			line.x = 900;
+			line.height = 880;
+			player.x = 110;
+			player.y = 290;
+			opponent.x = 990;
+			opponent.y = 290;
+			context.canvas.height = 900;
+			context.canvas.width = 1800;
+			canvasHeight = context.canvas.height;
+			canvasWidth = context.canvas.width;
 			}
 		}
 	}
@@ -126,14 +148,18 @@ var canvas = $('#game'),
 		connectTo: function() {
 			var toID = prompt("Enter ID you want to connect to", "ID");
 			var conn = peer.connect(toID);
-			peer.on('connection', function(conn) {console.log("Connected to" + toID)});
-			},
-		onConnected: function() { 
-				conn.send("Test");
-				conn.on('data', function(data) {
-				console.log('Received' + data);
-				})
-		}	
+			peer.on('connection', function(conn) { 
+				conn.on('open', function() {
+ 				// Receive messages
+  				conn.on('data', function(data) {
+   				console.log('Received', data);
+  				});
+
+  				// Send messages
+  				conn.send('Hello!');
+				});
+			});
+		}
 	}
 
 	$("#connect").click(function(){
@@ -249,13 +275,13 @@ var canvas = $('#game'),
 		else player.speedDown = 20;
 		if(player.x <= 10) player.speedLeft = 0;
 		else player.speedLeft = 20;
-		if((player.x + player.width) >= (canvasWidth-900)) player.speedRight = 0;
+		if((player.x + player.width) >= (canvasWidth-line.x)) player.speedRight = 0;
 		else player.speedRight = 20;
 		if(opponent.y <= 10) opponent.speedUp = 0;
 		else opponent.speedUp = 20;
 		if((opponent.y + opponent.height) >= (canvasHeight-10)) opponent.speedDown = 0;
 		else opponent.speedDown = 20;
-		if(opponent.x <= 900) opponent.speedLeft = 0;
+		if(opponent.x <= line.x) opponent.speedLeft = 0;
 		else opponent.speedLeft = 20;
 		if((opponent.x + opponent.width) >= (canvasWidth-10)) opponent.speedRight = 0;
 		else opponent.speedRight = 20;
