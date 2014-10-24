@@ -149,15 +149,7 @@ var canvas = $('#game'),
 			var toID = prompt("Enter ID you want to connect to", "ID");
 			var conn = peer.connect(toID);
 			peer.on('connection', function(conn) { 
-				conn.on('open', function() {
- 				// Receive messages
-  				conn.on('data', function(data) {
-   				console.log('Received', data);
-  				});
-
-  				// Send messages
-  				conn.send('Hello!');
-				});
+				console.log("Connected to:" + toID);
 			});
 		}
 	}
