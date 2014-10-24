@@ -11,7 +11,17 @@ var yourID = prompt("Pick your ID", "Your ID")
 var peer = new Peer(yourID, debug=1, {key: '3bup2xnrqvo39pb9'});
 console.log(yourID);
 $("body").css('overflow', 'hidden');
+resolution.detect();
 
+
+var resolution = {
+	detect: function() {
+
+		if(screen.widht<=720){floorImg.src = "textures/floor720p.png"; wallImg.src = "textures/wall_background720p.png"; canvas.width = 1200; canvas.height = 700;}
+		else{floorImg.src = "textures/floor.png"; wallImg.src = "textures/wall_background.png";}
+
+	}
+}
 
 var canvas = $('#game'),
 		context = canvas.get(0).getContext('2d'),
