@@ -8,9 +8,15 @@ body {
 	text-align: center;
 	width: 100%;
 }
-#button_position {
+#connect_position {
 	position:absolute;
 	left:60px;
+	top:915px;
+}
+
+#send_position {
+	position:absolute;
+	left:130px;
 	top:915px;
 }
 

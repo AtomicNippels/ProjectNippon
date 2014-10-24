@@ -110,8 +110,8 @@ var canvas = $('#game'),
 			wallImg.src = "textures/wall_background720p.png"; 
 			console.log("720p");
 			$('.scoreboard').css('left', '240px');
-			$('#button_position').css('top', '602px');
-			$('#button_position').css('left', '38px');
+			$('#connect_position').css('top', '602px');
+			$('#connect_position').css('left', '38px');
 			line.x = 600;
 			line.height = 680;
 			player.x = 110;
@@ -129,7 +129,8 @@ var canvas = $('#game'),
 			wallImg.src = "textures/wall_background.png";
 			console.log("1080p");
 			$('.scoreboard').css('left', '560px');
-			$('#button_position').css('top', '915px', 'left', '60px');
+			$('#connect_position').css('top', '915px');
+			$('#connect_position').css('left', '60px');
 			line.x = 900;
 			line.height = 880;
 			player.x = 110;
@@ -148,10 +149,8 @@ var canvas = $('#game'),
 		connectTo: function() {
 			var toID = prompt("Enter ID you want to connect to", "ID");
 			var conn = peer.connect(toID);
-			conn.on('open', function(){
- 			conn.send('hi!');
-			});
-		}
+			connection.sendData(conn);
+		},
 		receive: function() {
 			peer.on('connection', function(conn) {
   				conn.on('data', function(data){
@@ -159,11 +158,20 @@ var canvas = $('#game'),
     			console.log(data);
     			});
 			});
+		},
+		sendData: function(conn) {
+			conn.on('open', function(){
+ 			conn.send('hi!');
+			});
 		}
 	}
 
 	$("#connect").click(function(){
 		connection.connectTo();
+	})
+
+	$("#send").click(function(){
+		connection.sendData();
 	})
 
 	resolution.detect();
@@ -291,7 +299,7 @@ var canvas = $('#game'),
 		ball.y -= ball.velocityY;
 
 		handleInput();
-
+		connection.receive();
 	}
 
 	var gameloop = setInterval(function() {
